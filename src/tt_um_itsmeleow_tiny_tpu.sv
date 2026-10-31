@@ -20,6 +20,13 @@ module tt_um_itsmeleow_tiny_tpu (
     logic [31:0] product_out;
     logic        product_valid_unused;
 
+    always_ff @(posedge clk or negedge rst_n) begin
+        if (!rst_n)
+            activation_reg <= 8'd0;
+        else if (ena && uio_in[1])
+            activation_reg <= ui_in;
+        end
+
     pe pe_inst (
     	.clk(clk),
     	.rst_n(rst_n),
@@ -30,7 +37,8 @@ module tt_um_itsmeleow_tiny_tpu (
     	.weight_in(ui_in),
     	.row_in(activation_reg),
     	.row_out(row_out_unused),
-    	.product_out(product_out)
+    	// .acc_in(product_out),
+        .acc_out(product_out)
   	);
 
   	// Read the registered 32-bit result as four bytes, least significant first.

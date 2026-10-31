@@ -24,7 +24,7 @@ module pe #(
     output logic [DATA_WIDTH-1:0] row_out,
 
     // partial-sum accumulation stream: top -> bottom
-    input  logic [ACC_WIDTH-1:0]  acc_in,
+    // input  logic [ACC_WIDTH-1:0]  acc_in,
     output logic [ACC_WIDTH-1:0]  acc_out
 );
 
@@ -48,20 +48,24 @@ module pe #(
 
     // calculate acc_out = acc_in + product
     /*
-     * fp32_add fp32_add_inst ()
-     */
+    fp32_add fp32_add_inst (
+        .fp32_a(acc_in),
+        .fp32_b(product),
+        .fp32_res(acc_out)
+    )
+    */
 
 
     always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             row_out     <= 8'd0;
-            product_out <= 32'd0;
+            acc_out     <= 32'd0;
             out_valid   <= 1'b0;
         end else if (step_en) begin
             out_valid <= in_valid;
             if (in_valid) begin
-                row_out     <= row_in;
-                product_out <= product;
+                row_out <= row_in;
+                acc_out <= product;
             end
         end
     end
