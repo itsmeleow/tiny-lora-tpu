@@ -44,12 +44,12 @@ module pe #(
         .fp8_a(row_in),
         .fp8_b(weight_reg),
         .fp32_res(product)
-    )
+    );
 
     // calculate acc_out = acc_in + product
     /*
-    fp32_add fp32_add_inst ()
-    */
+     * fp32_add fp32_add_inst ()
+     */
 
 
     always_ff @(posedge clk or negedge rst_n) begin
